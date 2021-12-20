@@ -15,9 +15,6 @@
 //
 package org.msgpack.value;
 
-import org.msgpack.value.impl.ImmutableBigIntegerValueImpl;
-import org.msgpack.value.impl.ImmutableLongValueImpl;
-
 import java.math.BigInteger;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -43,27 +40,27 @@ public final class ValueFactory
 
     public static IntegerValue newInteger(byte v)
     {
-        return new ImmutableLongValueImpl(v);
+        return new IntegerValue(v);
     }
 
     public static IntegerValue newInteger(short v)
     {
-        return new ImmutableLongValueImpl(v);
+        return new IntegerValue(v);
     }
 
     public static IntegerValue newInteger(int v)
     {
-        return new ImmutableLongValueImpl(v);
+        return new IntegerValue(v);
     }
 
     public static IntegerValue newInteger(long v)
     {
-        return new ImmutableLongValueImpl(v);
+        return new IntegerValue(v);
     }
 
-    public static IntegerValue newInteger(BigInteger v)
+    public static IntegerValue newBigInteger(BigInteger v)
     {
-        return new ImmutableBigIntegerValueImpl(v);
+        return new BigIntegerValue(v);
     }
 
     public static FloatValue newFloat(float v)

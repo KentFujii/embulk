@@ -16,10 +16,6 @@
 package org.msgpack.value.impl;
 
 import org.msgpack.core.MessageIntegerOverflowException;
-import org.msgpack.value.IntegerValue;
-import org.msgpack.value.NumberValue;
-import org.msgpack.value.Value;
-import org.msgpack.value.ValueType;
 
 import java.math.BigInteger;
 
@@ -28,12 +24,12 @@ import java.math.BigInteger;
  *
  * @see org.msgpack.value.IntegerValue
  */
-public class ImmutableBigIntegerValueImpl
-        implements IntegerValue
+public final class BigIntegerValue
+        implements Value
 {
     private final BigInteger value;
 
-    public ImmutableBigIntegerValueImpl(BigInteger value)
+    public BigIntegerValue(BigInteger value)
     {
         this.value = value;
     }
@@ -63,6 +59,98 @@ public class ImmutableBigIntegerValueImpl
     public IntegerValue asIntegerValue()
     {
         return this;
+    }
+
+    /**
+     * Returns true if the value is in the range of [-2<sup>7</sup> to 2<sup>7</sup>-1].
+     */
+    public boolean isInByteRange()
+    {
+        return 0 <= value.compareTo(BYTE_MIN) && value.compareTo(BYTE_MAX) <= 0;
+    }
+
+    /**
+     * Returns true if the value is in the range of [-2<sup>15</sup> to 2<sup>15</sup>-1]
+     */
+    public boolean isInShortRange()
+    {
+        return 0 <= value.compareTo(SHORT_MIN) && value.compareTo(SHORT_MAX) <= 0;
+    }
+
+    /**
+     * Returns true if the value is in the range of [-2<sup>31</sup> to 2<sup>31</sup>-1]
+     */
+    public boolean isInIntRange()
+    {
+        return 0 <= value.compareTo(INT_MIN) && value.compareTo(INT_MAX) <= 0;
+    }
+
+    /**
+     * Returns true if the value is in the range of [-2<sup>63</sup> to 2<sup>63</sup>-1]
+     */
+    public boolean isInLongRange()
+    {
+        return 0 <= value.compareTo(LONG_MIN) && value.compareTo(LONG_MAX) <= 0;
+    }
+
+    /**
+     * Returns the value as a {@code byte}, otherwise throws an exception.
+     *
+     * @throws MessageIntegerOverflowException If the value does not fit in the range of {@code byte} type.
+     */
+    public byte asByte()
+    {
+        if (!isInByteRange()) {
+            throw new MessageIntegerOverflowException(value);
+        }
+        return value.byteValue();
+    }
+
+    /**
+     * Returns the value as a {@code short}, otherwise throws an exception.
+     *
+     * @throws MessageIntegerOverflowException If the value does not fit in the range of {@code short} type.
+     */
+    public short asShort()
+    {
+        if (!isInShortRange()) {
+            throw new MessageIntegerOverflowException(value);
+        }
+        return value.shortValue();
+    }
+
+    /**
+     * Returns the value as an {@code int}, otherwise throws an exception.
+     *
+     * @throws MessageIntegerOverflowException If the value does not fit in the range of {@code int} type.
+     */
+    public int asInt()
+    {
+        if (!isInIntRange()) {
+            throw new MessageIntegerOverflowException(value);
+        }
+        return value.intValue();
+    }
+
+    /**
+     * Returns the value as a {@code long}, otherwise throws an exception.
+     *
+     * @throws MessageIntegerOverflowException If the value does not fit in the range of {@code long} type.
+     */
+    public long asLong()
+    {
+        if (!isInLongRange()) {
+            throw new MessageIntegerOverflowException(value);
+        }
+        return value.longValue();
+    }
+
+    /**
+     * Returns the value as a {@code BigInteger}.
+     */
+    public BigInteger asBigInteger()
+    {
+        return value;
     }
 
     @Override
@@ -105,72 +193,6 @@ public class ImmutableBigIntegerValueImpl
     public double toDouble()
     {
         return value.doubleValue();
-    }
-
-    @Override
-    public boolean isInByteRange()
-    {
-        return 0 <= value.compareTo(BYTE_MIN) && value.compareTo(BYTE_MAX) <= 0;
-    }
-
-    @Override
-    public boolean isInShortRange()
-    {
-        return 0 <= value.compareTo(SHORT_MIN) && value.compareTo(SHORT_MAX) <= 0;
-    }
-
-    @Override
-    public boolean isInIntRange()
-    {
-        return 0 <= value.compareTo(INT_MIN) && value.compareTo(INT_MAX) <= 0;
-    }
-
-    @Override
-    public boolean isInLongRange()
-    {
-        return 0 <= value.compareTo(LONG_MIN) && value.compareTo(LONG_MAX) <= 0;
-    }
-
-    @Override
-    public byte asByte()
-    {
-        if (!isInByteRange()) {
-            throw new MessageIntegerOverflowException(value);
-        }
-        return value.byteValue();
-    }
-
-    @Override
-    public short asShort()
-    {
-        if (!isInShortRange()) {
-            throw new MessageIntegerOverflowException(value);
-        }
-        return value.shortValue();
-    }
-
-    @Override
-    public int asInt()
-    {
-        if (!isInIntRange()) {
-            throw new MessageIntegerOverflowException(value);
-        }
-        return value.intValue();
-    }
-
-    @Override
-    public long asLong()
-    {
-        if (!isInLongRange()) {
-            throw new MessageIntegerOverflowException(value);
-        }
-        return value.longValue();
-    }
-
-    @Override
-    public BigInteger asBigInteger()
-    {
-        return value;
     }
 
     @Override
