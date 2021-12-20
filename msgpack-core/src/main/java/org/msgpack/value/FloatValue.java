@@ -15,6 +15,9 @@
 //
 package org.msgpack.value;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  * Representation of MessagePack's Float type.
  *
@@ -22,7 +25,114 @@ package org.msgpack.value;
  *
  * @see org.msgpack.value.NumberValue
  */
-public interface FloatValue
-        extends NumberValue
+public final class FloatValue
+        implements NumberValue
 {
+    private final double value;
+
+    public FloatValue(double value)
+    {
+        this.value = value;
+    }
+
+    @Override
+    public ValueType getValueType()
+    {
+        return ValueType.FLOAT;
+    }
+
+    @Override
+    public NumberValue asNumberValue()
+    {
+        return this;
+    }
+
+    @Override
+    public FloatValue asFloatValue()
+    {
+        return this;
+    }
+
+    @Override
+    public byte toByte()
+    {
+        return (byte) value;
+    }
+
+    @Override
+    public short toShort()
+    {
+        return (short) value;
+    }
+
+    @Override
+    public int toInt()
+    {
+        return (int) value;
+    }
+
+    @Override
+    public long toLong()
+    {
+        return (long) value;
+    }
+
+    @Override
+    public BigInteger toBigInteger()
+    {
+        return new BigDecimal(value).toBigInteger();
+    }
+
+    @Override
+    public float toFloat()
+    {
+        return (float) value;
+    }
+
+    @Override
+    public double toDouble()
+    {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Value)) {
+            return false;
+        }
+        Value v = (Value) o;
+
+        if (!v.isFloatValue()) {
+            return false;
+        }
+        return value == v.asFloatValue().toDouble();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        long v = Double.doubleToLongBits(value);
+        return (int) (v ^ (v >>> 32));
+    }
+
+    @Override
+    public String toJson()
+    {
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            return "null";
+        }
+        else {
+            return Double.toString(value);
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return Double.toString(value);
+    }
 }

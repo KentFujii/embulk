@@ -16,7 +16,6 @@
 package org.msgpack.value;
 
 import org.msgpack.value.impl.ImmutableBigIntegerValueImpl;
-import org.msgpack.value.impl.ImmutableDoubleValueImpl;
 import org.msgpack.value.impl.ImmutableLongValueImpl;
 
 import java.math.BigInteger;
@@ -69,12 +68,12 @@ public final class ValueFactory
 
     public static FloatValue newFloat(float v)
     {
-        return new ImmutableDoubleValueImpl(v);
+        return new FloatValue(v);
     }
 
     public static FloatValue newFloat(double v)
     {
-        return new ImmutableDoubleValueImpl(v);
+        return new FloatValue(v);
     }
 
     public static StringValue newString(String s)
